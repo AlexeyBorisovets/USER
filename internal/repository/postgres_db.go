@@ -98,7 +98,7 @@ func (p *PRepository) UpdateUser(ctx context.Context, id string, user *model.Use
 }
 
 // UpdateAuth logout, delete refresh token
-func (p *PRepository) UpdateAuth(ctx context.Context, id, refreshToken string) error {
+func (p *PRepository) UpdateAuth(ctx context.Context, id string, refreshToken string) error {
 	a, err := p.Pool.Exec(ctx, "update users set refreshToken=$1 where id=$2", refreshToken, id)
 	if a.RowsAffected() == 0 {
 		return fmt.Errorf("user with this id doesnt exist")
@@ -164,8 +164,8 @@ func (p *PRepository) GetBalanceByID(ctx context.Context, userId string) (uint, 
 }
 
 // UpdateBalance update balance by id
-func (p *PRepository) UpdateBalance(ctx context.Context, id, balance uint) error {
-	a, err := p.Pool.Exec(ctx, "update users set refreshToken=$1 where id=$2", balance, id)
+func (p *PRepository) UpdateBalance(ctx context.Context, userid string, balance uint) error {
+	a, err := p.Pool.Exec(ctx, "update users set balance=$1 where id=$2", balance, userid)
 	if a.RowsAffected() == 0 {
 		return fmt.Errorf("user with this id doesnt exist")
 	}

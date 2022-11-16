@@ -16,5 +16,5 @@ type Repository interface {
 	SelectByIDAuth(ctx context.Context, id string) (model.User, error)
 	GetUserByUserType(ctx context.Context, usertype string) ([]*model.User, error)
 	GetBalanceByID(ctx context.Context, userId string) (uint, error)
-	UpdateBalance(ctx context.Context, id, balance uint) error
+	UpdateBalance(ctx context.Context, userId string, balance uint) error
 }
