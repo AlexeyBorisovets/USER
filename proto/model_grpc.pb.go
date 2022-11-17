@@ -22,14 +22,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CRUDClient interface {
+	GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error)
+	GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error)
+	UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error)
 	Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetAllUsers(ctx context.Context, in *GetAllUsersRequest, opts ...grpc.CallOption) (*GetAllUsersResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
-	GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error)
-	GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error)
-	UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error)
 	Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error)
 	RefreshMyTokens(ctx context.Context, in *RefreshTokensRequest, opts ...grpc.CallOption) (*RefreshTokensResponse, error)
 	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*Response, error)
@@ -41,6 +41,33 @@ type cRUDClient struct {
 
 func NewCRUDClient(cc grpc.ClientConnInterface) CRUDClient {
 	return &cRUDClient{cc}
+}
+
+func (c *cRUDClient) GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error) {
+	out := new(GetUserByUserTypeResponse)
+	err := c.cc.Invoke(ctx, "/CRUD/GetUserByUserType", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cRUDClient) GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error) {
+	out := new(GetBalanceByIDResponse)
+	err := c.cc.Invoke(ctx, "/CRUD/GetBalanceByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cRUDClient) UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/CRUD/UpdateBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *cRUDClient) Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error) {
@@ -88,33 +115,6 @@ func (c *cRUDClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts
 	return out, nil
 }
 
-func (c *cRUDClient) GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error) {
-	out := new(GetUserByUserTypeResponse)
-	err := c.cc.Invoke(ctx, "/CRUD/GetUserByUserType", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cRUDClient) GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error) {
-	out := new(GetBalanceByIDResponse)
-	err := c.cc.Invoke(ctx, "/CRUD/GetBalanceByID", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cRUDClient) UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
-	err := c.cc.Invoke(ctx, "/CRUD/UpdateBalance", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *cRUDClient) Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error) {
 	out := new(AuthenticationResponse)
 	err := c.cc.Invoke(ctx, "/CRUD/Authentication", in, out, opts...)
@@ -146,14 +146,14 @@ func (c *cRUDClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc
 // All implementations must embed UnimplementedCRUDServer
 // for forward compatibility
 type CRUDServer interface {
+	GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error)
+	GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error)
+	UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error)
 	Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*Response, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*Response, error)
-	GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error)
-	GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error)
-	UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error)
 	Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error)
 	RefreshMyTokens(context.Context, *RefreshTokensRequest) (*RefreshTokensResponse, error)
 	Logout(context.Context, *LogoutRequest) (*Response, error)
@@ -164,6 +164,15 @@ type CRUDServer interface {
 type UnimplementedCRUDServer struct {
 }
 
+func (UnimplementedCRUDServer) GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByUserType not implemented")
+}
+func (UnimplementedCRUDServer) GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBalanceByID not implemented")
+}
+func (UnimplementedCRUDServer) UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBalance not implemented")
+}
 func (UnimplementedCRUDServer) Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Registration not implemented")
 }
@@ -178,15 +187,6 @@ func (UnimplementedCRUDServer) DeleteUser(context.Context, *DeleteUserRequest) (
 }
 func (UnimplementedCRUDServer) UpdateUser(context.Context, *UpdateUserRequest) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
-}
-func (UnimplementedCRUDServer) GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserByUserType not implemented")
-}
-func (UnimplementedCRUDServer) GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBalanceByID not implemented")
-}
-func (UnimplementedCRUDServer) UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateBalance not implemented")
 }
 func (UnimplementedCRUDServer) Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Authentication not implemented")
@@ -208,6 +208,60 @@ type UnsafeCRUDServer interface {
 
 func RegisterCRUDServer(s grpc.ServiceRegistrar, srv CRUDServer) {
 	s.RegisterService(&CRUD_ServiceDesc, srv)
+}
+
+func _CRUD_GetUserByUserType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByUserTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CRUDServer).GetUserByUserType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/CRUD/GetUserByUserType",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CRUDServer).GetUserByUserType(ctx, req.(*GetUserByUserTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CRUD_GetBalanceByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBalanceByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CRUDServer).GetBalanceByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/CRUD/GetBalanceByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CRUDServer).GetBalanceByID(ctx, req.(*GetBalanceByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CRUD_UpdateBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CRUDServer).UpdateBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/CRUD/UpdateBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CRUDServer).UpdateBalance(ctx, req.(*UpdateBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _CRUD_Registration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -300,60 +354,6 @@ func _CRUD_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CRUD_GetUserByUserType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserByUserTypeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CRUDServer).GetUserByUserType(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/CRUD/GetUserByUserType",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CRUDServer).GetUserByUserType(ctx, req.(*GetUserByUserTypeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CRUD_GetBalanceByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBalanceByIDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CRUDServer).GetBalanceByID(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/CRUD/GetBalanceByID",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CRUDServer).GetBalanceByID(ctx, req.(*GetBalanceByIDRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CRUD_UpdateBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateBalanceRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CRUDServer).UpdateBalance(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/CRUD/UpdateBalance",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CRUDServer).UpdateBalance(ctx, req.(*UpdateBalanceRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _CRUD_Authentication_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthenticationRequest)
 	if err := dec(in); err != nil {
@@ -416,6 +416,18 @@ var CRUD_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CRUDServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "GetUserByUserType",
+			Handler:    _CRUD_GetUserByUserType_Handler,
+		},
+		{
+			MethodName: "GetBalanceByID",
+			Handler:    _CRUD_GetBalanceByID_Handler,
+		},
+		{
+			MethodName: "UpdateBalance",
+			Handler:    _CRUD_UpdateBalance_Handler,
+		},
+		{
 			MethodName: "Registration",
 			Handler:    _CRUD_Registration_Handler,
 		},
@@ -434,18 +446,6 @@ var CRUD_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUser",
 			Handler:    _CRUD_UpdateUser_Handler,
-		},
-		{
-			MethodName: "GetUserByUserType",
-			Handler:    _CRUD_GetUserByUserType_Handler,
-		},
-		{
-			MethodName: "GetBalanceByID",
-			Handler:    _CRUD_GetBalanceByID_Handler,
-		},
-		{
-			MethodName: "UpdateBalance",
-			Handler:    _CRUD_UpdateBalance_Handler,
 		},
 		{
 			MethodName: "Authentication",

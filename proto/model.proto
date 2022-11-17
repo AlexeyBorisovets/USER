@@ -2,15 +2,15 @@ syntax = "proto3";
 option go_package = ".";
 
 
- service CRUD{
+ service CRUD{ 
+  rpc GetUserByUserType(GetUserByUserTypeRequest)returns (GetUserByUserTypeResponse);
+  rpc GetBalanceByID(GetBalanceByIDRequest)returns(GetBalanceByIDResponse);
+  rpc UpdateBalance(UpdateBalanceRequest)returns(Response);
   rpc Registration(RegistrationRequest)returns(RegistrationResponse){};
   rpc GetUser(GetUserRequest)returns(GetUserResponse){};
   rpc GetAllUsers(GetAllUsersRequest)returns(GetAllUsersResponse);
   rpc DeleteUser(DeleteUserRequest)returns(Response);
   rpc UpdateUser(UpdateUserRequest)returns(Response);
-  rpc GetUserByUserType(GetUserByUserTypeRequest)returns (GetUserByUserTypeResponse);
-  rpc GetBalanceByID(GetBalanceByIDRequest)returns(GetBalanceByIDResponse);
-  rpc UpdateBalance(UpdateBalanceRequest)returns(Response);
   rpc Authentication(AuthenticationRequest)returns(AuthenticationResponse);
   rpc RefreshMyTokens(RefreshTokensRequest)returns(RefreshTokensResponse);
   rpc Logout(LogoutRequest)returns(Response);
@@ -38,7 +38,7 @@ message UpdateUserRequest{
 
 message RegistrationRequest{
   string name = 2;
-  int64 balance = 3;
+  uint64 balance = 3;
   string usertype = 4;
   string password = 5;
 }
@@ -84,7 +84,7 @@ message AuthenticationResponse{
 message User{
   string id = 1;
   string name = 2;
-  int64 balance = 3;
+  uint64 balance = 3;
   string usertype = 4;
   string password = 5;
 }
@@ -104,13 +104,13 @@ message GetBalanceByIDRequest{
 }
 
 message GetBalanceByIDResponse{
-    int64 balance = 1;
+    uint64 balance = 1;
 }
 
 message UpdateBalanceRequest{
     string accessToken = 1;
     string id = 2;
-    int64 balance = 3;
+    uint64 balance = 3;
 }
 
 
