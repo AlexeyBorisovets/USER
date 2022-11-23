@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"strconv"
+
 	"github.com/AlexeyBorisovets/USER/internal/model"
 
 	"context"
@@ -152,7 +154,8 @@ func (p *PRepository) GetUserByUserType(ctx context.Context, usertype string) ([
 // GetUserByID select balance by id
 func (p *PRepository) GetBalanceByID(ctx context.Context, userId string) (uint, error) {
 	var balance uint
-	err := p.Pool.QueryRow(ctx, "select balance from users where id=$1", userId).Scan(balance)
+	var balancestr string
+	err := p.Pool.QueryRow(ctx, "select balance from users where id=$1", userId).Scan(balancestr)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return 0, fmt.Errorf("user with this id doesnt exist(func: balance by id): %v", err)
@@ -160,7 +163,8 @@ func (p *PRepository) GetBalanceByID(ctx context.Context, userId string) (uint, 
 		log.Errorf("database error, balance by id: %v", err)
 		return 0, err
 	}
-	return balance, nil
+	strconv.ParseInt(balancestr, int(balance), 64)
+	return uint(balance), nil
 }
 
 // UpdateBalance update balance by id

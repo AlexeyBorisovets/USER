@@ -1,25 +1,56 @@
 package main
 
-// import (
-// 	"context"
-// 	"fmt"
-// 	"os"
+import (
+	"context"
+	"fmt"
+	"log"
+	"net"
 
-// 	//"github.com/AlexeyBorisovets/USER/internal/model"
-// 	"github.com/jackc/pgx/v5"
-// )
+	"github.com/AlexeyBorisovets/USER/internal/model"
+	"github.com/AlexeyBorisovets/USER/internal/repository"
+	"github.com/AlexeyBorisovets/USER/internal/server"
+	"github.com/AlexeyBorisovets/USER/internal/service"
+	pb "github.com/AlexeyBorisovets/USER/proto"
+	"github.com/caarlos0/env/v6"
+	"google.golang.org/grpc"
+
+	"github.com/jackc/pgx/v4/pgxpool"
+)
 
 func main() {
-	// urlExample := "postgres://username:password@localhost:5432/database_name"
-	// conn, err := pgx.Connect(context.Background(), "postgres://postgres:123@localhost:5432/Test")
-	// if err != nil {
-	// 	fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-	// 	os.Exit(1)
-	// }
-	// if err == nil {
-	// 	fmt.Println("connect to database: successfully")
-	// }
-	// defer conn.Close(context.Background())
+
+	listen, err := net.Listen("tcp", ":8080")
+	if err != nil {
+		defer log.Fatalf("error while listening port: %e", err)
+	}
+	fmt.Println("Server successfully started on port :8080...")
+
+	key := []byte("super-key")
+	cfg := model.Config{JwtKey: key}
+	err = env.Parse(&cfg)
+	if err != nil {
+		log.Fatalf("failed to start service, %e", err)
+	}
+
+	poolP, err := pgxpool.Connect(context.Background(), "postgres://postgres:123@localhost:5432/Test")
+	if err != nil {
+		log.Fatalf("bad connection with postgresql: %v", err)
+	} else {
+		fmt.Println("DB successfully connect...")
+	}
+	rP := repository.PRepository{Pool: poolP}
+	defer func() {
+		poolP.Close()
+	}()
+
+	ns := grpc.NewServer()
+	newService := service.NewService(&rP, cfg.JwtKey)
+	srv := server.NewServer(newService)
+	pb.RegisterCRUDServer(ns, srv)
+
+	if err = ns.Serve(listen); err != nil {
+		defer log.Fatalf("error while listening server: %e", err)
+	}
 
 	// testusers := []model.User{
 	// 	{
@@ -39,13 +70,4 @@ func main() {
 	// 		UserType:     "vendor",
 	// 	},
 	// }
-
-	// ctx := context.Context(context.Background())
-
-	// _, err = conn.Exec(ctx, "insert into users(id,name,password,balance,usertype) values($1,$2,$3,$4,$5)",
-	// 	testusers[0].ID, testusers[0].Name, testusers[0].Password, testusers[0].Balance, testusers[0].UserType)
-	// if err != nil {
-	// 	fmt.Errorf("error with inserting")
-	// }
-
 }

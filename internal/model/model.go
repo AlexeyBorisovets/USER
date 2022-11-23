@@ -7,8 +7,9 @@ type User struct {
 	Name         string `bson,json:"name"`
 	Password     string `bson,json:"password"`
 	Balance      uint   `bson,json:"balance"`
-	RefreshToken string `bson,json:"refreshtoken"`
 	UserType     string `bson,json:"usertype"`
+	RefreshToken string `bson,json:"refreshtoken"`
+	
 }
 
 //ПокупкаТовара()----//СписаниеСредствСБаланса()
