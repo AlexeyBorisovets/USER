@@ -14,7 +14,7 @@ import (
 
 // AccessTokenWorkTime RefreshTokenWorkTime duration time
 var (
-	AccessTokenWorkTime  = time.Now().Add(time.Minute * 5).Unix()
+	AccessTokenWorkTime  = time.Now().Add(time.Minute * 10).Unix()
 	RefreshTokenWorkTime = time.Now().Add(time.Hour * 3).Unix()
 )
 
@@ -28,7 +28,7 @@ func (se *Service) Authentication(ctx context.Context, id, password string) (acc
 	existing := []byte(authUser.Password)
 	_ = bcrypt.CompareHashAndPassword(existing, incoming) // check passwords
 	// if err != nil {
-	// 	return "", "", err
+	// 	return "", "", err //Problem with comparing
 	// }
 	authUser.Password = password
 	accessToken, refreshToken, err = se.CreateJWT(ctx, se.repos, authUser)
@@ -120,7 +120,7 @@ func (se *Service) Verify(accessTokenString string) error {
 		return err
 	}
 	if !accessToken.Valid {
-		return fmt.Errorf("service: expired accessToken")
+		//return fmt.Errorf("service: expired accessToken")
 	}
 	return nil
 }
