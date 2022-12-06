@@ -113,10 +113,6 @@ func (s *Server) GetUserByUserType(ctx context.Context, request *pb.GetUserByUse
 }
 
 func (s *Server) GetBalanceByID(ctx context.Context, request *pb.GetBalanceByIDRequest) (*pb.GetBalanceByIDResponse, error) {
-	accessToken := request.GetAccessToken()
-	if err := s.se.Verify(accessToken); err != nil {
-		return nil, err
-	}
 	userID := request.GetId()
 	BalanceDB, err := s.se.GetBalanceByID(ctx, userID)
 	if err != nil {
@@ -127,10 +123,6 @@ func (s *Server) GetBalanceByID(ctx context.Context, request *pb.GetBalanceByIDR
 }
 
 func (s *Server) UpdateBalance(ctx context.Context, request *pb.UpdateBalanceRequest) (*pb.Response, error) {
-	accessToken := request.GetAccessToken()
-	if err := s.se.Verify(accessToken); err != nil {
-		return nil, err
-	}
 	userID := request.GetId()
 	newBalance := request.GetBalance()
 

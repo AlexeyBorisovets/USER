@@ -46,7 +46,7 @@ func main() {
 	ns := grpc.NewServer()
 	newService := service.NewService(&rP, cfg.JwtKey)
 	srv := server.NewServer(newService)
-	pb.RegisterCRUDServer(ns, srv)
+	pb.RegisterUSERServer(ns, srv)
 
 	if err = ns.Serve(listen); err != nil {
 		defer log.Fatalf("error while listening server: %e", err)

@@ -2,7 +2,7 @@ syntax = "proto3";
 option go_package = ".";
 
 
- service CRUD{ 
+ service USER{ 
   rpc GetUserByUserType(GetUserByUserTypeRequest)returns (GetUserByUserTypeResponse);
   rpc GetBalanceByID(GetBalanceByIDRequest)returns(GetBalanceByIDResponse);
   rpc UpdateBalance(UpdateBalanceRequest)returns(Response);
@@ -99,8 +99,8 @@ message GetUserByUserTypeResponse{
 }
 
 message GetBalanceByIDRequest{
-    string accessToken = 1;
-    string id=2;
+    
+    string id=1;
 }
 
 message GetBalanceByIDResponse{
@@ -108,9 +108,8 @@ message GetBalanceByIDResponse{
 }
 
 message UpdateBalanceRequest{
-    string accessToken = 1;
-    string id = 2;
-    uint64 balance = 3;
+    string id = 1;
+    uint64 balance = 2;
 }
 
 
