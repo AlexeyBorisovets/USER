@@ -25,7 +25,7 @@ type USERClient interface {
 	GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error)
 	GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error)
 	UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*BufResponse, error)
-	Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
+	Registr(ctx context.Context, in *RegistrRequest, opts ...grpc.CallOption) (*RegistrResponse, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetAllUsers(ctx context.Context, in *GetAllUsersRequest, opts ...grpc.CallOption) (*GetAllUsersResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*BufResponse, error)
@@ -70,9 +70,9 @@ func (c *uSERClient) UpdateBalance(ctx context.Context, in *UpdateBalanceRequest
 	return out, nil
 }
 
-func (c *uSERClient) Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error) {
-	out := new(RegistrationResponse)
-	err := c.cc.Invoke(ctx, "/USER/Registration", in, out, opts...)
+func (c *uSERClient) Registr(ctx context.Context, in *RegistrRequest, opts ...grpc.CallOption) (*RegistrResponse, error) {
+	out := new(RegistrResponse)
+	err := c.cc.Invoke(ctx, "/USER/Registr", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -149,7 +149,7 @@ type USERServer interface {
 	GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error)
 	GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error)
 	UpdateBalance(context.Context, *UpdateBalanceRequest) (*BufResponse, error)
-	Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error)
+	Registr(context.Context, *RegistrRequest) (*RegistrResponse, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*BufResponse, error)
@@ -173,8 +173,8 @@ func (UnimplementedUSERServer) GetBalanceByID(context.Context, *GetBalanceByIDRe
 func (UnimplementedUSERServer) UpdateBalance(context.Context, *UpdateBalanceRequest) (*BufResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBalance not implemented")
 }
-func (UnimplementedUSERServer) Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Registration not implemented")
+func (UnimplementedUSERServer) Registr(context.Context, *RegistrRequest) (*RegistrResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Registr not implemented")
 }
 func (UnimplementedUSERServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
@@ -264,20 +264,20 @@ func _USER_UpdateBalance_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _USER_Registration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegistrationRequest)
+func _USER_Registr_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegistrRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(USERServer).Registration(ctx, in)
+		return srv.(USERServer).Registr(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/USER/Registration",
+		FullMethod: "/USER/Registr",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(USERServer).Registration(ctx, req.(*RegistrationRequest))
+		return srv.(USERServer).Registr(ctx, req.(*RegistrRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -428,8 +428,8 @@ var USER_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _USER_UpdateBalance_Handler,
 		},
 		{
-			MethodName: "Registration",
-			Handler:    _USER_Registration_Handler,
+			MethodName: "Registr",
+			Handler:    _USER_Registr_Handler,
 		},
 		{
 			MethodName: "GetUser",

@@ -6,7 +6,7 @@ option go_package = ".";
   rpc GetUserByUserType(GetUserByUserTypeRequest)returns (GetUserByUserTypeResponse);
   rpc GetBalanceByID(GetBalanceByIDRequest)returns(GetBalanceByIDResponse);
   rpc UpdateBalance(UpdateBalanceRequest)returns(BufResponse);
-  rpc Registration(RegistrationRequest)returns(RegistrationResponse){};
+  rpc Registr(RegistrRequest)returns(RegistrResponse){};
   rpc GetUser(GetUserRequest)returns(GetUserResponse){};
   rpc GetAllUsers(GetAllUsersRequest)returns(GetAllUsersResponse);
   rpc DeleteUser(DeleteUserRequest)returns(BufResponse);
@@ -36,13 +36,13 @@ message UpdateUserRequest{
   string id = 3;
 }
 
-message RegistrationRequest{
+message RegistrRequest{
   string name = 2;
   uint64 balance = 3;
   string usertype = 4;
   string password = 5;
 }
-message RegistrationResponse{
+message RegistrResponse{
   string id = 1;
 }
 
