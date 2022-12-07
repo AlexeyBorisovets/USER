@@ -58,7 +58,7 @@ func (s *Server) RefreshMyTokens(ctx context.Context, refreshTokenString *pb.Ref
 }
 
 // Logout exit
-func (s *Server) Logout(ctx context.Context, request *pb.LogoutRequest) (*pb.Response, error) {
+func (s *Server) Logout(ctx context.Context, request *pb.LogoutRequest) (*pb.BufResponse, error) {
 	err := s.se.Verify(request.AccessToken)
 	if err != nil {
 		return nil, err
@@ -68,7 +68,7 @@ func (s *Server) Logout(ctx context.Context, request *pb.LogoutRequest) (*pb.Res
 	if err != nil {
 		return nil, err
 	}
-	return new(pb.Response), nil
+	return new(pb.BufResponse), nil
 }
 
 // hashingPassword _

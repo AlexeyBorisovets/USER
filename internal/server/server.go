@@ -62,17 +62,17 @@ func (s *Server) GetAllUsers(ctx context.Context, _ *pb.GetAllUsersRequest) (*pb
 }
 
 // DeleteUser delete user by id
-func (s *Server) DeleteUser(ctx context.Context, request *pb.DeleteUserRequest) (*pb.Response, error) {
+func (s *Server) DeleteUser(ctx context.Context, request *pb.DeleteUserRequest) (*pb.BufResponse, error) {
 	idUser := request.GetId()
 	err := s.se.DeleteUser(ctx, idUser)
 	if err != nil {
 		return nil, err
 	}
-	return new(pb.Response), nil
+	return new(pb.BufResponse), nil
 }
 
 // UpdateUser update user with new parameters
-func (s *Server) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.Response, error) {
+func (s *Server) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) (*pb.BufResponse, error) {
 	accessToken := request.GetAccessToken()
 	if err := s.se.Verify(accessToken); err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *Server) UpdateUser(ctx context.Context, request *pb.UpdateUserRequest) 
 	if err != nil {
 		return nil, err
 	}
-	return new(pb.Response), nil
+	return new(pb.BufResponse), nil
 }
 
 func (s *Server) GetUserByUserType(ctx context.Context, request *pb.GetUserByUserTypeRequest) (*pb.GetUserByUserTypeResponse, error) {
@@ -122,7 +122,7 @@ func (s *Server) GetBalanceByID(ctx context.Context, request *pb.GetBalanceByIDR
 	return BalanceProto, nil
 }
 
-func (s *Server) UpdateBalance(ctx context.Context, request *pb.UpdateBalanceRequest) (*pb.Response, error) {
+func (s *Server) UpdateBalance(ctx context.Context, request *pb.UpdateBalanceRequest) (*pb.BufResponse, error) {
 	userID := request.GetId()
 	newBalance := request.GetBalance()
 
@@ -130,5 +130,5 @@ func (s *Server) UpdateBalance(ctx context.Context, request *pb.UpdateBalanceReq
 	if err != nil {
 		return nil, err
 	}
-	return new(pb.Response), nil
+	return new(pb.BufResponse), nil
 }

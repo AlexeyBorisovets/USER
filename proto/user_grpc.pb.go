@@ -24,15 +24,15 @@ const _ = grpc.SupportPackageIsVersion7
 type USERClient interface {
 	GetUserByUserType(ctx context.Context, in *GetUserByUserTypeRequest, opts ...grpc.CallOption) (*GetUserByUserTypeResponse, error)
 	GetBalanceByID(ctx context.Context, in *GetBalanceByIDRequest, opts ...grpc.CallOption) (*GetBalanceByIDResponse, error)
-	UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error)
+	UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*BufResponse, error)
 	Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetAllUsers(ctx context.Context, in *GetAllUsersRequest, opts ...grpc.CallOption) (*GetAllUsersResponse, error)
-	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error)
-	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*BufResponse, error)
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*BufResponse, error)
 	Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error)
 	RefreshMyTokens(ctx context.Context, in *RefreshTokensRequest, opts ...grpc.CallOption) (*RefreshTokensResponse, error)
-	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*Response, error)
+	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*BufResponse, error)
 }
 
 type uSERClient struct {
@@ -61,8 +61,8 @@ func (c *uSERClient) GetBalanceByID(ctx context.Context, in *GetBalanceByIDReque
 	return out, nil
 }
 
-func (c *uSERClient) UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *uSERClient) UpdateBalance(ctx context.Context, in *UpdateBalanceRequest, opts ...grpc.CallOption) (*BufResponse, error) {
+	out := new(BufResponse)
 	err := c.cc.Invoke(ctx, "/USER/UpdateBalance", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -97,8 +97,8 @@ func (c *uSERClient) GetAllUsers(ctx context.Context, in *GetAllUsersRequest, op
 	return out, nil
 }
 
-func (c *uSERClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *uSERClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*BufResponse, error) {
+	out := new(BufResponse)
 	err := c.cc.Invoke(ctx, "/USER/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -106,8 +106,8 @@ func (c *uSERClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts
 	return out, nil
 }
 
-func (c *uSERClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *uSERClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*BufResponse, error) {
+	out := new(BufResponse)
 	err := c.cc.Invoke(ctx, "/USER/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -133,8 +133,8 @@ func (c *uSERClient) RefreshMyTokens(ctx context.Context, in *RefreshTokensReque
 	return out, nil
 }
 
-func (c *uSERClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*Response, error) {
-	out := new(Response)
+func (c *uSERClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*BufResponse, error) {
+	out := new(BufResponse)
 	err := c.cc.Invoke(ctx, "/USER/Logout", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -148,15 +148,15 @@ func (c *uSERClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc
 type USERServer interface {
 	GetUserByUserType(context.Context, *GetUserByUserTypeRequest) (*GetUserByUserTypeResponse, error)
 	GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error)
-	UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error)
+	UpdateBalance(context.Context, *UpdateBalanceRequest) (*BufResponse, error)
 	Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error)
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error)
-	DeleteUser(context.Context, *DeleteUserRequest) (*Response, error)
-	UpdateUser(context.Context, *UpdateUserRequest) (*Response, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*BufResponse, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*BufResponse, error)
 	Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error)
 	RefreshMyTokens(context.Context, *RefreshTokensRequest) (*RefreshTokensResponse, error)
-	Logout(context.Context, *LogoutRequest) (*Response, error)
+	Logout(context.Context, *LogoutRequest) (*BufResponse, error)
 	mustEmbedUnimplementedUSERServer()
 }
 
@@ -170,7 +170,7 @@ func (UnimplementedUSERServer) GetUserByUserType(context.Context, *GetUserByUser
 func (UnimplementedUSERServer) GetBalanceByID(context.Context, *GetBalanceByIDRequest) (*GetBalanceByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBalanceByID not implemented")
 }
-func (UnimplementedUSERServer) UpdateBalance(context.Context, *UpdateBalanceRequest) (*Response, error) {
+func (UnimplementedUSERServer) UpdateBalance(context.Context, *UpdateBalanceRequest) (*BufResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBalance not implemented")
 }
 func (UnimplementedUSERServer) Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error) {
@@ -182,10 +182,10 @@ func (UnimplementedUSERServer) GetUser(context.Context, *GetUserRequest) (*GetUs
 func (UnimplementedUSERServer) GetAllUsers(context.Context, *GetAllUsersRequest) (*GetAllUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllUsers not implemented")
 }
-func (UnimplementedUSERServer) DeleteUser(context.Context, *DeleteUserRequest) (*Response, error) {
+func (UnimplementedUSERServer) DeleteUser(context.Context, *DeleteUserRequest) (*BufResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedUSERServer) UpdateUser(context.Context, *UpdateUserRequest) (*Response, error) {
+func (UnimplementedUSERServer) UpdateUser(context.Context, *UpdateUserRequest) (*BufResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
 func (UnimplementedUSERServer) Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error) {
@@ -194,7 +194,7 @@ func (UnimplementedUSERServer) Authentication(context.Context, *AuthenticationRe
 func (UnimplementedUSERServer) RefreshMyTokens(context.Context, *RefreshTokensRequest) (*RefreshTokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshMyTokens not implemented")
 }
-func (UnimplementedUSERServer) Logout(context.Context, *LogoutRequest) (*Response, error) {
+func (UnimplementedUSERServer) Logout(context.Context, *LogoutRequest) (*BufResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (UnimplementedUSERServer) mustEmbedUnimplementedUSERServer() {}

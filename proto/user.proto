@@ -5,15 +5,15 @@ option go_package = ".";
  service USER{ 
   rpc GetUserByUserType(GetUserByUserTypeRequest)returns (GetUserByUserTypeResponse);
   rpc GetBalanceByID(GetBalanceByIDRequest)returns(GetBalanceByIDResponse);
-  rpc UpdateBalance(UpdateBalanceRequest)returns(Response);
+  rpc UpdateBalance(UpdateBalanceRequest)returns(BufResponse);
   rpc Registration(RegistrationRequest)returns(RegistrationResponse){};
   rpc GetUser(GetUserRequest)returns(GetUserResponse){};
   rpc GetAllUsers(GetAllUsersRequest)returns(GetAllUsersResponse);
-  rpc DeleteUser(DeleteUserRequest)returns(Response);
-  rpc UpdateUser(UpdateUserRequest)returns(Response);
+  rpc DeleteUser(DeleteUserRequest)returns(BufResponse);
+  rpc UpdateUser(UpdateUserRequest)returns(BufResponse);
   rpc Authentication(AuthenticationRequest)returns(AuthenticationResponse);
   rpc RefreshMyTokens(RefreshTokensRequest)returns(RefreshTokensResponse);
-  rpc Logout(LogoutRequest)returns(Response);
+  rpc Logout(LogoutRequest)returns(BufResponse);
  }
 
 
@@ -22,7 +22,7 @@ message GetAllUsersResponse{
   repeated User users = 1;
 }
 
-message Response{}
+message BufResponse{}
 
 
 message LogoutRequest{
