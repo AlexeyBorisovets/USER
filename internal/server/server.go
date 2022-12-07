@@ -11,7 +11,7 @@ import (
 
 // Server struct
 type Server struct {
-	pb.UnimplementedCRUDServer
+	pb.UnimplementedUSERServer
 	se *service.Service
 }
 

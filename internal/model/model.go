@@ -1,7 +1,7 @@
 // Package model models that use in this project
 package model
 
-// Vendor : struct for vendor
+
 type User struct {
 	ID           string `bson,json:"id"`
 	Name         string `bson,json:"name"`
@@ -12,7 +12,6 @@ type User struct {
 	
 }
 
-//ПокупкаТовара()----//СписаниеСредствСБаланса()
 
 // Config struct create config
 type Config struct {

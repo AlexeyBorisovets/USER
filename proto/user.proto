@@ -111,7 +111,3 @@ message UpdateBalanceRequest{
     string id = 1;
     uint64 balance = 2;
 }
-
-
-
-
